@@ -2,16 +2,16 @@ import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
 import { useEffect, useState } from 'react';
+import { useSelector, useStore } from 'react-redux';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    return JSON.parse(window.localStorage.getItem('contacts')) ?? [];
-  });
+  const contacts = useSelector(state => state.contactsStore.contacts);
+
   const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // useEffect(() => {
+  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   const handleSubmit = data => {
     const contactExists = contacts.some(
@@ -25,7 +25,7 @@ export const App = () => {
       return;
     }
 
-    setContacts(prevState => [...prevState, data]);
+    // setContacts(prevState => [...prevState, data]);
   };
 
   const handleinputChangeFilter = data => {
@@ -33,7 +33,7 @@ export const App = () => {
   };
 
   const handleOnDelete = id => {
-    setContacts(prevState => prevState.filter(el => el.id !== id));
+    // setContacts(prevState => prevState.filter(el => el.id !== id));
   };
 
   const handleFilterContacts = () => {
