@@ -6,7 +6,7 @@ export const contactsReducer = (state = initialState, action) => {
   // action -> {type: "contacts/deleteProduct", paylout:}
   switch (action.type) {
     case 'contacts/deleteProduct':
-      return;{...state, contacts:[state.products, action.payload]}
+      return { ...state, contacts: [state.products, action.payload] };
       break;
 
     default:
