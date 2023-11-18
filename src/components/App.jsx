@@ -1,17 +1,19 @@
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
-import { useEffect, useState } from 'react';
-import { useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export const App = () => {
+  const dispatch = useDispatch()
   const contacts = useSelector(state => state.contactsStore.contacts);
+  const filter = useSelector(state => state.filterStore.filter)
 
-  const [filter, setFilter] = useState('');
+  // const [filter, setFilter] = useState('');
 
-  // useEffect(() => {
-  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
+  useEffect(() => {
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const handleSubmit = data => {
     const contactExists = contacts.some(
@@ -25,15 +27,27 @@ export const App = () => {
       return;
     }
 
-    // setContacts(prevState => [...prevState, data]);
+    const addProductAction = {
+      type: 'contacts/addProduct', 
+      payload: data
+    }
+    dispatch(addProductAction)
   };
 
   const handleinputChangeFilter = data => {
-    setFilter(data);
+    const setFilterAction = {
+      type: "set_filter",
+      payload: data
+}
+    dispatch(setFilterAction)
   };
 
   const handleOnDelete = id => {
-    // setContacts(prevState => prevState.filter(el => el.id !== id));
+    const deleteProductAction = {
+      type: 'contacts/deleteProduct',
+      payload: id
+    }
+    dispatch(deleteProductAction)
   };
 
   const handleFilterContacts = () => {
