@@ -3,13 +3,13 @@ import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { addContacts, deleteContacts } from 'redux/contacts/contacts.reducer';
+import { setFilter } from 'redux/filter/filter.reducer';
 
 export const App = () => {
-  const dispatch = useDispatch()
-  const contacts = useSelector(state => state.contactsStore.contacts);
-  const filter = useSelector(state => state.filterStore.filter)
-
-  // const [filter, setFilter] = useState('');
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
 
   useEffect(() => {
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -27,30 +27,22 @@ export const App = () => {
       return;
     }
 
-    const addProductAction = {
-      type: 'contacts/addProduct', 
-      payload: data
-    }
-    dispatch(addProductAction)
+    dispatch(addContacts(data));
   };
 
   const handleinputChangeFilter = data => {
-    const setFilterAction = {
-      type: "set_filter",
-      payload: data
-}
-    dispatch(setFilterAction)
+    dispatch(setFilter(data));
   };
 
   const handleOnDelete = id => {
-    const deleteProductAction = {
-      type: 'contacts/deleteProduct',
-      payload: id
-    }
-    dispatch(deleteProductAction)
+    dispatch(deleteContacts(id));
   };
 
   const handleFilterContacts = () => {
+    if (!contacts) {
+      return [];
+    }
+
     const filteredContacts = contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
