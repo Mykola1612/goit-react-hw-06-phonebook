@@ -1,8 +1,11 @@
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import styles from './ContactForm.module.css';
+import { addContacts } from 'redux/contacts/contacts.reducer';
+import { useDispatch } from 'react-redux';
 
-const ContactForm = ({ onSubmit }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -26,7 +29,7 @@ const ContactForm = ({ onSubmit }) => {
       number: number,
       id: nanoid(),
     };
-    onSubmit(newContact);
+    dispatch(addContacts(newContact));
     setName('');
     setNumber('');
   };

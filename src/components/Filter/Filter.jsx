@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from './Filter.module.css';
+import { setFilter } from 'redux/filter/filter.reducer';
+import { useDispatch, useSelector } from 'react-redux';
 
-const Filter = ({ filter, filterValue }) => {
-  const handleinputChangeFilter = e => {
-    filter(e.target.value);
-  };
+const Filter = () => {
+  const dispatch = useDispatch();
+  const filterValue = useSelector(state => state.filter);
 
   return (
     <>
@@ -12,7 +13,7 @@ const Filter = ({ filter, filterValue }) => {
       <input
         type="text"
         name="number"
-        onChange={handleinputChangeFilter}
+        onChange={e => dispatch(setFilter(e.target.value))}
         className={styles.input_filter}
         required
         value={filterValue}
