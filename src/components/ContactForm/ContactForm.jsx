@@ -2,10 +2,12 @@ import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import styles from './ContactForm.module.css';
 import { addContacts } from 'redux/contacts/contacts.reducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -29,6 +31,18 @@ const ContactForm = () => {
       number: number,
       id: nanoid(),
     };
+
+    const contactExists = contacts.some(
+      contact =>
+        contact.name.toLowerCase() === newContact.name.toLowerCase() ||
+        contact.number === newContact.number
+    );
+
+    if (contactExists) {
+      alert(`${newContact.name} is already in contacts.`);
+      return;
+    }
+
     dispatch(addContacts(newContact));
     setName('');
     setNumber('');
@@ -56,7 +70,7 @@ const ContactForm = () => {
           className={styles.all_inputs__contact}
           onChange={handleinputChangeNumber}
           required
-          pattern="\\+?\\d{1,4}?[ .\\-\\s]?\\(?\\d{1,3}?\\)?[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,9}"
+          pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
         />
       </label>
       <button type="submit" className={styles.button_submit__contact}>
